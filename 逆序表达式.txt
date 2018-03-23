@@ -1,0 +1,55 @@
+输入任意中序表达式，每个符号以空格隔开，运算符包括+-*/()；
+输入格式分两行，第一行表示输入表达式的长度，第二行表示输入的表达式。
+样例：
+输入：13
+      ( ( 3 + 2 * 3 ) + 5 ) * 2
+输出：3 2 3 * + 5 + 2 *
+
+程序：
+
+import java.util.Scanner;
+import java.util.Stack;
+
+public class Main {
+	
+	@SuppressWarnings("unused")
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+			Scanner in = new Scanner(System.in);
+			int N = in.nextInt();
+			in.nextLine();//换行读取数据
+			String str = in.nextLine();
+			in.close();
+			char[] chs = str.toCharArray();
+			String[] strs = str.split(" ");
+			Stack<String> stack = new Stack<String>();
+			String ch = "";
+			String lastch = "";
+			for(int i = 0; i<strs.length;i++){
+				ch = strs[i];
+				if(!"()+-/*".contains(strs[i])){   //数字直接输出
+					System.out.print(strs[i]+" ");
+					continue;
+				}								//开始插入运算符，首先判断能否入栈
+				if((ch=="+" || ch=="-")&&(stack.peek()=="*"||stack.peek()=="/")){ //遇到运算符如果比栈顶运算符低级
+					while((lastch = stack.pop())!="("){							  //直接输出之前的运算符直到遇到"("
+						System.out.print(lastch+" ");
+					}
+				}
+				else if("+-/*(".contains(strs[i])){ //同级或更高级运算符和"("入栈
+					stack.push(strs[i]);
+				}
+				else{
+					while(!stack.isEmpty()&&(ch=stack.pop())!="(" ){ // 如果遇到了")",输出到前一个"("之间的运算符
+						if("+-*/".contains(ch)){        //此处不知道为什么无法识别"("这个字符，只能这么处理
+							System.out.print(ch+" ");
+						}
+					}
+				}
+			}
+			while(!stack.isEmpty()){
+				System.out.print(stack.pop()+" ");
+			}
+			
+	}
+}
