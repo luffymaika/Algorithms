@@ -1,0 +1,19 @@
+import java.util.Scanner;
+
+public class Main {
+	public static void main(String args[]){
+		Scanner in = new Scanner(System.in);
+		long N = in.nextLong();
+		long result = 0;
+		if(N%2==1){
+			result = N*(N-1)*(N-2);
+		}
+		else if((N-1)%2==0){
+			result = N*(N-1)*(N-5);
+		}else{
+			result = N*(N-1)*(N-3);
+		}
+		System.out.println(result);
+		in.close();
+	}
+}

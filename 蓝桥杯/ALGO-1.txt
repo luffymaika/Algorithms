@@ -1,0 +1,39 @@
+import java.util.Scanner;
+
+public class Main {
+	public static void main(String args[]){
+		Scanner in = new Scanner(System.in);
+		int lenth = Integer.parseInt(in.nextLine());
+		int[] nums = read(in,lenth);
+		int m = Integer.parseInt(in.nextLine());
+		for (int i = 0;i<m;i++){
+			int[] yaoqiu = read(in,3);
+			int[] subnum = new int[lenth];
+			subnum = nums.clone();
+			int t = 0;
+			for(int j=yaoqiu[1];j>0;j--){
+				for(int k = yaoqiu[0]-1;k<j-1;k++){
+					if(subnum[k]<subnum[k+1]){
+						t = subnum[k];
+						subnum[k] = subnum[k+1];
+						subnum[k+1]=t;
+					}
+				}
+			}
+			System.out.println(subnum[yaoqiu[0]+yaoqiu[2]-2]);
+			for (int j : subnum) {
+				System.out.print(j+" ");
+			}
+		}
+	}
+	
+	private static int[] read(Scanner input, int lenth){
+		String str = input.nextLine();
+		String[] strs = str.split(" ");
+		int[] num = new int[lenth];
+		for(int i = 0;i<strs.length; i++){
+			num[i] = Integer.parseInt(strs[i]);
+		}
+		return num;
+	}
+}
