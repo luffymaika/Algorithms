@@ -1,0 +1,79 @@
+﻿
+搭积木
+
+小明最近喜欢搭数字积木，
+一共有10块积木，每个积木上有一个数字，0~9。
+
+搭积木规则：
+每个积木放到其它两个积木的上面，并且一定比下面的两个积木数字小。
+最后搭成4层的金字塔形，必须用完所有的积木。
+
+下面是两种合格的搭法：
+
+   0
+  1 2
+ 3 4 5
+6 7 8 9
+
+   0
+  3 1
+ 7 5 2
+9 8 6 4    
+
+请你计算这样的搭法一共有多少种？
+
+请填表示总数目的数字。
+注意：你提交的应该是一个整数，不要填写任何多余的内容或说明性文字。
+
+答案：768
+
+程序：
+
+import java.util.Arrays;
+
+public class Main {
+	
+	public static boolean[] nums=new boolean[10];  // 用于记录哪些数字可用
+	public static int[][] xulie=new int[5][5];		//用于记录该三角形
+	public static int sum = 0;						//用于计算总数
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+			for(int i=0;i<10;i++){
+				nums[i]=true;
+			}
+			for(int i=0;i<5;i++)
+				Arrays.fill(xulie[i], -1);
+			dp2(1,1);
+			System.out.println(sum);
+	}
+	
+	public static void dp2(int i, int j){
+		if(i==4&&j==4){			//出界条件，达到了最后一个元素
+			for(int x=0;x<10;x++){
+				if(nums[x]){
+					if(x>xulie[i-1][j] && x>xulie[i-1][j-1]){
+						sum++;
+					}
+				}
+			}
+		}
+		else{
+			for(int x=0;x<10;x++){
+				if(nums[x]){ //该数可用
+					if(x>xulie[i-1][j] && x>xulie[i-1][j-1]){ //要比上面两个元素大
+						nums[x]=false;   // 做标记处理，说明此数已占用
+						xulie[i][j]=x;
+						if(j==i)
+							dp2(i+1,1);
+						else
+							dp2(i,j+1);
+						nums[x]=true;   //回溯归来，释放此数字
+					}
+				}
+			}
+		}
+	}
+}
+
+
+  
