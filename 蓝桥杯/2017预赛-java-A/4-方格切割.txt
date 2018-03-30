@@ -1,0 +1,55 @@
+
+标题：方格分割
+
+6x6的方格，沿着格子的边线剪开成两部分。
+要求这两部分的形状完全相同。
+
+如图：p1.png, p2.png, p3.png 就是可行的分割法。
+
+试计算：
+包括这3种分法在内，一共有多少种不同的分割方法。
+注意：旋转对称的属于同一种分割法。
+
+请提交该整数，不要填写任何多余的内容或说明文字。
+
+答案：509
+
+代码：
+import java.util.Arrays;
+
+public class Main {
+	/**
+	 * 以方格顶点来算作点，采用dfs来遍历分割线，分割线关于（3，3）点对称
+	 */
+	static boolean[][] map = new boolean[7][7];
+	static int sum = 0;
+	static final int N = 6;
+	static int[][] mov = {{-1,0,1,0},{0,1,0,-1}};
+	public static void main(String args[]){
+		for(int i=0;i<7;i++){
+			Arrays.fill(map[i], false);
+		}
+		map[N/2][N/2]=true;
+		dfs(N/2,N/2);
+		System.out.println(sum/4);
+	}
+		
+	static void dfs(int x, int y){
+		if(x==0||y==0||x==N||y==N){
+			sum++;
+			return;
+		}
+		for(int i=0;i<4;i++){
+			int nx = x+mov[0][i];
+			int ny = y+mov[1][i];
+			if(nx<0||ny<0||nx>N||ny>N) continue;
+			if(!map[nx][ny]){
+				map[nx][ny]=true;
+				map[N-nx][N-ny]=true;
+				dfs(nx,ny);
+				map[nx][ny]=false;
+				map[N-nx][N-ny]=false;
+			}
+		}
+	}
+}
