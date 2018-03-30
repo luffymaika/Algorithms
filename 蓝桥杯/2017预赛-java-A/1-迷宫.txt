@@ -39,6 +39,70 @@ ULRDLUURRR
 如果你还没明白游戏规则，可以参看一个简化的4x4迷宫的解说图：
 p1.png
 
+答案：31
+代码：
+import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+	/**
+	 * 0:U,1:D,2:L,3:R
+	 */
+	static int[][] map = new int[12][12];		//记录地图中的点能否走通
+	static int[][] dir = new int[12][12];		//记录地图中的方向
+	static int[][] mov = {{-1,1,0,0},{0,0,-1,1}}; // 用于移动
+	public static void main(String args[]){
+		for(int i=0;i<12;i++){
+			Arrays.fill(dir[i], 0);
+			Arrays.fill(map[i], 0);
+		}
+		Scanner in = new Scanner(System.in);
+		for(int i=1;i<11;i++){				// 读入数据
+			String str = in.nextLine();
+			char[] chs =  str.toCharArray();
+			for(int j=0;j<chs.length;j++){
+				if(chs[j]=='U') dir[i][j+1]=0;
+				else if(chs[j]=='D') dir[i][j+1]=1;
+				else if(chs[j]=='L') dir[i][j+1]=2;
+				else dir[i][j+1]=3;
+			}
+		}
+		in.close();
+		for(int i=1;i<11;i++){
+			for(int j=1;j<11;j++){
+				dfs(i,j);
+			}
+		}
+		int sum = 0;
+		for(int i=1;i<11;i++){
+			for(int j=1; j<11;j++){
+				if(map[i][j]==1)
+					sum++;
+			}
+		}
+		System.out.println(sum);
+		
+	}
+		
+	static boolean dfs(int x,int y){
+		if(x<1||y<1||x>10||y>10||map[x][y]>0){		//出界或者走到能够走通的方格，说明能走通
+			return true;
+		}else if(map[x][y]<0){		//走到来时的路（死循环）或者走不通的点，说明无法走通
+			return false;
+		}
+		map[x][y]=-1;
+		int nx = x+mov[0][dir[x][y]];
+		int ny = y+mov[1][dir[x][y]];
+		if(dfs(nx,ny)){
+			map[x][y]=1;
+			return true;
+		}else{
+			map[x][y]=-2;
+			return false;
+		}
+	}
+}
+
 
 
 
